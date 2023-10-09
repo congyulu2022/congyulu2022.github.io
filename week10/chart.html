@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.15.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.2"></script>
+</head>
+<body>
+  <div id="vis"/>
+  <script>
+    const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 500,
+  "height": 400,
+  "title": "Total Emission by continents in different fields (2022)",
+  "data": {
+    "url": "https://raw.githubusercontent.com/congyulu2022/3179/main/Total%20Emissions%20Per%20Country%20(2020).csv"
+  },
+  "params": [
+    {
+      "name": "Continent_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "Asia",
+          "Americas",
+          "Africa",
+          "Europe",
+          "Australia and New Zealand"
+        ],
+        "labels": [
+          "Show All",
+          "Asia",
+          "Americas",
+          "Africa",
+          "Europe",
+          "Australia and New Zealand"
+        ],
+        "name": "Continent Selection: "
+      }
+    },
+    {
+      "name": "Amount_Above",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 7000000,
+        "step": 1000000,
+        "name": "Minimum Amount: "
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "datum.Amount > 0"},
+    {
+      "filter": {
+        "field": "Area",
+        "oneOf": [
+          "Asia",
+          "Americas",
+          "Africa",
+          "Europe",
+          "Australia and New Zealand"
+        ]
+      }
+    },
+    {
+      "filter": {
+        "field": "Item",
+        "oneOf": [
+          "Farm-gate emissions",
+          "Agri-food systems",
+          "Pre- and post- production",
+          "AFOLU",
+          "Emissions on agricultural land"
+        ]
+      }
+    },
+    {
+      "filter": "Continent_selection == null || datum.Area == Continent_selection"
+    },
+    {"filter": "datum.Amount > Amount_Above"}
+  ],
+  "encoding": {
+    "x": {"field": "Item", "type": "nominal", "title": "Source of Emission "},
+    "y": {
+      "field": "Amount",
+      "type": "quantitative",
+      "title": "Amount of Emission",
+      "axis": {"tickCount": 5},
+      "scale": {"domain": [1, 10000000]}
+    }
+  },
+  "layer": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "size": {
+          "field": "Amount",
+          "type": "quantitative",
+          "title": "Emission Amount",
+          "scale": {
+            "type": "threshold",
+            "domain": [2000000, 3000000, 4000000, 5000000, 6000000],
+            "range": [10, 100, 200, 300, 400, 500]
+          },
+          "legend": {"format": ".1s"}
+        },
+        "color": {
+          "field": "Area",
+          "type": "nominal",
+          "title": "Continent",
+          "scale": {
+            "domain": [
+              "Asia",
+              "Americas",
+              "Africa",
+              "Europe",
+              "Australia and New Zealand"
+            ],
+            "range": ["#e41a1c", "#984ea3", "#ff7f00", "#377eb8", "#a65628"]
+          }
+        },
+        "opacity": {"value": 0.6},
+        "tooltip": [
+          {"field": "Area", "type": "nominal"},
+          {"field": "Item", "type": "nominal"},
+          {"field": "Element", "type": "nominal"},
+          {"field": "Amount", "type": "quantitative", "format": ","},
+          {"field": "Unit", "type": "nominal"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -12,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": {"field": "Area", "type": "nominal"},
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": {
+            "test": "datum['Amount'] == '6564551.449' || datum['Amount'] == '4289950.889'|| datum['Amount'] == '3667086.538'|| datum['Amount'] == '3190816.485'|| datum['Amount'] == '3142976.581'|| datum['Amount'] == '3049511.651'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          {"field": "Area", "type": "nominal"},
+          {"field": "Item", "type": "nominal"},
+          {"field": "Element", "type": "nominal"},
+          {"field": "Amount", "type": "quantitative", "format": ","},
+          {"field": "Unit", "type": "nominal"}
+        ]
+      }
+    }
+  ],
+  "config": {}
+};
+    vegaEmbed("#vis", spec, {mode: "vega-lite"}).then(console.log).catch(console.warn);
+  </script>
+</body>
+</html>
