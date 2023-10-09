@@ -39,7 +39,7 @@
           "lookup": "properties.NAME",
           "from": {
             "data": {
-              "url": "https://raw.githubusercontent.com/congyulu2022/3179/main/Total%20Emissions%20Per%20Country%20(2020).csv"
+              "url": "https://raw.githubusercontent.com/congyulu2022/congyulu2022.github.io/main/ass2/Data/Total%20Emissions%20Per%20Country%20(2020).csv"
             },
             "key": "Area",
             "fields": ["Amount"]
