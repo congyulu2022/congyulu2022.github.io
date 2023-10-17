@@ -36,7 +36,7 @@
       "bind": {
         "input": "range",
         "min": 0,
-        "max": 7000000,
+        "max": 5000000,
         "step": 1000000,
         "name": "Minimum Amount: "
       }

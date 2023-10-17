@@ -1,0 +1,100 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 320,
+  "height": 300,
+  "title": {"text": "Different Emission Elements"},
+  "data": {
+    "url": "https://raw.githubusercontent.com/congyulu2022/congyulu2022.github.io/main/ass2/Data/Total%20Emissions%20Per%20Country%20(2020).csv"
+  },
+  "params": [
+    {
+      "name": "Continent_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "Asia",
+          "Americas",
+          "Africa",
+          "Europe",
+          "Australia and New Zealand"
+        ],
+        "labels": [
+          "Show All",
+          "Asia",
+          "Americas",
+          "Africa",
+          "Europe",
+          "Australia and New Zealand"
+        ],
+        "name": "Continent Selection: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "field": "Element",
+        "oneOf": [
+          "Emissions (CH4)",
+          "Emissions (CO2)",
+          "Emissions (CO2eq) (AR5)",
+          "Emissions (CO2eq) from CH4 (AR5)",
+          "Emissions (CO2eq) from F-gases (AR5)",
+          "Emissions (CO2eq) from N2O (AR5)"
+        ]
+      }
+    },
+    {
+      "filter": {
+        "field": "Area",
+        "oneOf": [
+          "Asia",
+          "Americas",
+          "Africa",
+          "Europe",
+          "Australia and New Zealand"
+        ]
+      }
+    },
+    {
+      "filter": "Continent_selection == null || datum.Area == Continent_selection"
+    },
+    {"filter": "datum.Amount > 0"}
+  ],
+  "encoding": {
+    "y": {"field": "Amount", "type": "quantitative"},
+    "x": {"field": "Element", "type": "nominal"}
+  },
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "color": {
+          "field": "Area",
+          "type": "nominal",
+          "title": "Continent",
+          "scale": {
+            "domain": [
+              "Asia",
+              "Americas",
+              "Africa",
+              "Europe",
+              "Australia and New Zealand"
+            ],
+            "range": ["#377eb8", "#ff7f00", "#f1ef5f", "#e25568", "#4cc78a"]
+          }
+        },
+        "opacity": {"value": 0.6},
+        "tooltip": [
+          {"field": "Area", "type": "nominal"},
+          {"field": "Item", "type": "nominal"},
+          {"field": "Element", "type": "nominal"},
+          {"field": "Amount", "type": "quantitative", "format": ","},
+          {"field": "Unit", "type": "nominal"}
+        ]
+      }
+    }
+  ],
+  "config": {}
+}

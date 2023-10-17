@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
   "height": 350,
-  "title": " Total emissions per country (2020)",
+  "title": " Total emissions per country (2015-2020)",
   "projection": {"type": "equalEarth"},
   "data": {
     "url": "https://raw.githubusercontent.com/congyulu2022/3179/main/ne_110m.json",
